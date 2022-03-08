@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.urls import reverse
 from PIL import Image
 
 # Create your models here.
@@ -21,6 +22,11 @@ class Photo(models.Model):
             memory_size = (350, 350)
             img.thumbnail(memory_size)
             img.save(self.img.path)
+
+
+    def get_absolute_url(self):
+        # return reverse('photo-detail', kwargs={'pk': self.pk})
+        return reverse('home-page')
 
 # The Comments Model
 class Comment(models.Model):
