@@ -9,7 +9,7 @@ from PIL import Image
 # The Photos Model
 class Photo(models.Model):
     img = models.ImageField(upload_to='images')
-    caption = models.CharField(max_length=250, default=timezone.now)
+    caption = models.CharField(max_length=250, default='Caption here')
     date_posted = models.DateTimeField(default=timezone.now)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -32,10 +32,12 @@ class Photo(models.Model):
 class Comment(models.Model):
     comment = models.CharField(max_length=200)
     comment_date_posted = models.DateTimeField(default=timezone.now)
-    img_id = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    image = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=20)
 
 
 # The Likes Model
 class Like(models.Model):
     like = models.IntegerField()
-    img_id = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    image = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=20)
