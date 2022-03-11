@@ -32,6 +32,9 @@
                             <a href="{% url 'photo-create' %}" class="nav-link">New Photo</a>
                         </li>
                         <li class="nav-item">
+                            <a href="{% url 'profile' %}" class="nav-link">Profile</a>
+                        </li>
+                        <li class="nav-item">
                             <a href="{% url 'logout' %}" class="nav-link">Logout</a>
                         </li>
                         <li class="nav-item">
@@ -40,10 +43,10 @@
                     </ul>
                 </div>
             </div>
-            <form class="d-flex" method=POST action="#">
+            <form class="d-flex" method=POST action="{% url 'search' %}">
             {% csrf_token %}
     
-            <input class="form-control me-2" type="search" placeholder="Search Category" aria-label="Search" name="searched">
+            <input class="form-control me-2" type="search" placeholder="Search User" aria-label="Search" name="searched">
             <button class="btn btn-outline-secondary" type="submit">Search</button>
             </form>
         </nav>

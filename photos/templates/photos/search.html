@@ -1,0 +1,23 @@
+{% extends 'photos/base.html' %}
+
+{% block content %}
+    {% for pic in pics %}
+        <article class="media register-section mt-3">
+            <div class="media-body">
+                <div class="article-metadata">
+                    {{ pic.owner }}
+                    <small class="text-muted">{{ pic.date_posted|date:'F d, Y' }}</small>
+                </div>
+                <a href="{% url 'photo-detail' pic.id %}">
+                    <img class="img-thumbnail article-img" src="{{ pic.img.url }}" >
+                </a>
+                <div>
+                    <a class="mr-2" href="#">{{ pic.owner }}</a>
+                    <p class="article-content">{{ pic.caption }}</p>
+                    <a href="{% url 'comment-create' pic.owner %}">Add a comment</a>
+                </div>
+                
+            </div>
+        </article>
+    {% endfor %}
+{% endblock %}
