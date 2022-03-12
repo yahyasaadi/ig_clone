@@ -1,7 +1,10 @@
+from distutils import core
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.core.mail import send_mail
+from django.conf import settings
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 # Create your views here.
@@ -9,6 +12,13 @@ def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
+            username = request.POST['username']
+            email = request.POST['email']
+            subject = f"Welcome to Instagram, {username}"
+            message = f"Hello {username}, you can now start sharing beautiful images with the world."
+            from_mail = settings.EMAIL_HOST_USER
+            recipient_list = [email]
+            send_mail(subject, message, from_mail, recipient_list, fail_silently=False)
             form.save()
             messages.success(request, f'Your account has been created! Login.')
             return redirect('login')
