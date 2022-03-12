@@ -19,7 +19,7 @@ urlpatterns = [
     path('photo/<int:pk>/update/', PhotoUpdateView.as_view(), name='photo-update'),
     path('photo/<int:pk>/delete/', PhotoDeleteView.as_view(), name='photo-delete'),
     path('search/', views.search, name='search'),
-    path('like/<int:pk>/', LikeView, name='like-photo'),
-    # path('comment/<int:pk>/new/', CommentCreateView.as_view(), name='comment-create'),
-    path('comment/<slug:username>/new', CommentCreateView.as_view(), name='comment-create'),
+    # path('like/<int:pk>/', LikeView, name='like-photo'),
+    # path('comment/<slug:pk>/new/', CommentCreateView.as_view(), name='comment-create'),
+    # path('comment/<slug:username>/new', CommentCreateView.as_view(), name='comment-create'),
 ]

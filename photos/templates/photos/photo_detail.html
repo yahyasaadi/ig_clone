@@ -17,7 +17,7 @@
             <p class="article-content">{{ object.caption }}</p>
         </div>
         <div>
-            <form action="{ url 'like-photo' object.id }" method="POST">
+            <form action="#" method="POST">
                 {% csrf_token %}
                 <button class="btn btn-primary" type="submit" name="img_id" value="{{ object.id }}">Like</button>
             </form>
