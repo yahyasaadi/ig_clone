@@ -16,6 +16,10 @@
             <img class="img-thumbnail article-img" src="{{ object.img.url }}" >
             <p class="article-content">{{ object.caption }}</p>
         </div>
+        <div class="responses mt-3 mb-3">
+            <i class="fa-light fa-heart"></i>
+            <i class="fa-light fa-comment"></i>
+        </div>
         <div>
             <form action="#" method="POST">
                 {% csrf_token %}

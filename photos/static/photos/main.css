@@ -18,9 +18,10 @@
 
 
 .account-img {
-    height: 100px;
-    width: 100px;
+    height: 25px;
+    width: 25px;
     margin-right: 16px;
+    /* border: 10px solid red; */
 }
 
 .article-metadata {

@@ -1,22 +1,36 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
+from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Photo, Comment, Like
+from .forms import CommentForm
 
 # Create your views here.
-def home(request):
-    context = {
-        'posts' : Photo.objects.all()
-    }
-    return render(request, 'photos/home.html')
+# def home(request):
+#     context = {
+#         'posts' : Photo.objects.all()
+#     }
+#     return render(request, 'photos/home.html')
 
-class PhotoListView(ListView):
-    model = Photo
-    ordering = ['-date_posted']
+# class PhotoListView(ListView):
+#     model = Photo
+#     ordering = ['-date_posted']
     
+# Try a function based view
+@login_required
+def photos_list(request):
+    photos = Photo.objects.all().order_by('-date_posted')
+    context = {
+        'photos': photos
+    }
+    return render(request, 'photos/photo_list.html', context)
+
+
+
 
 class UserPhotoListView(ListView):
     model = Photo # blog/post_list.html requires this template to run
@@ -31,6 +45,10 @@ class UserPhotoListView(ListView):
 
 class PhotoDetailView(DetailView):
     model = Photo
+
+# Trying a function based view
+def photo_detail(request):
+    pass
 
 
 class PhotoCreateView(LoginRequiredMixin, CreateView):
@@ -81,18 +99,23 @@ def search(request):
 
 
 
+# Comments view function
+def add_comment(request, id):
+    photo = get_object_or_404(Photo, id=id)
+    # comments = Comment.objects.filter(image=photo)
+    if request.method == 'POST':
+        comment = request.POST['comment']
+        new_comment = Comment(comment=comment, user=request.user, image=photo)
 
-# Comments Views
-class CommentCreateView(LoginRequiredMixin, CreateView):
-    model = Comment 
-    fields = ['comment']
+        comment_form = CommentForm(request.POST, instance=new_comment)
+        if comment_form.is_valid():
+            comment_form.save()
+            messages.success(request, f'Your comment has been added!')
+            return redirect('home-page')
+    else:
+        comment_form = CommentForm(instance=request.user)
 
-    def form_valid(self, form):
-        photo = self.get_object()
-        form.instance.photo = photo
-        form.instance.owner = self.request.user
-        # form.save()
-        return super().form_valid(form)
+    return render(request, 'photos/comment_form.html', context={'comment_form':comment_form})
 
 
 def LikeView(request, pk):

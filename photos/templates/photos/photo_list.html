@@ -1,24 +1,25 @@
 {% extends 'photos/base.html' %}
 
 {% block content %}
-    {% for post in object_list %}
-        <article class="media register-section mt-3">
-            <!-- <img class="rounded-circle account-img" src="{{ post.owner.profile.image.url }}" > -->
-            <div class="media-body">
-                <div class="article-metadata">
-                    <a class="mr-2" href="{% url 'user-posts' post.owner %}">{{ post.owner }}</a>
-                    <small class="text-muted">{{ post.date_posted|date:'F d, Y' }}</small>
-                </div>
-                <a href="{% url 'photo-detail' post.id %}">
-                    <img class="img-thumbnail article-img" src="{{ post.img.url }}" >
-                </a>
-                <div>
-                    <a class="mr-2" href="#">{{ post.owner }}</a>
-                    <p class="article-content">{{ post.caption }}</p>
-                    <a href="#">Add a comment</a>
-                </div>
-                
+    {% for photo in photos %}
+        <section class="container">
+            <div class="prof mb-3">
+                <img class="rounded-circle account-img" src="{{ photo.owner.profile.image.url }}" >
+                <a class="mr-2" href="{% url 'user-posts' photo.owner %}">{{ photo.owner }}</a>
             </div>
-        </article>
+            <a href="{% url 'photo-detail' photo.id %}">
+                <img class="img-thumbnail article-img" src="{{ photo.img.url }}" >
+            </a>
+            <div class="d-flex gap-3">
+                <a class="mr-2" href="#">{{ photo.owner }}</a>
+                <p class="article-content">{{ photo.caption }}</p>
+            </div>
+            <div class="mb-3">
+                <i class="fa-solid fa-heart ml-3"></i>
+                <a href="{% url 'new-comment' photo.id %}">
+                    <i class="fa-solid fa-comment"></i>
+                </a>
+            </div>
+        </section>
     {% endfor %}
 {% endblock %}
