@@ -1,30 +1,36 @@
 {% extends 'photos/base.html' %}
 
 {% block content %}
-    <article class="media content-section">
-        <div class="media-body">
-            <div class="article-metadata">
+    <section class="list-section mb-3 mt-3">
+        <div class="card">
+            <div class="prof mb-3">
+                <img src="{{ object.owner.profile.image.url }}" class="rounded-circle account-img" alt="">
                 <a class="mr-2" href="{% url 'user-posts' object.owner %}">{{ object.owner }}</a>
-                <small class="text-muted">{{ object.date_posted|date:'F d, Y' }}</small>
                 {% if object.owner == user %}
-                <div>
-                    <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'photo-update' object.id %}">Update</a>
-                    <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'photo-delete' object.id %}">Delete</a>
-                </div>
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'photo-update' object.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'photo-delete' object.id %}">Delete</a>
+                    </div>
                 {% endif %}
             </div>
-            <img class="img-thumbnail article-img" src="{{ object.img.url }}" >
-            <p class="article-content">{{ object.caption }}</p>
+            <a href="{% url 'photo-detail' object.id %}">
+                <img class="card-img-top article-img" src="{{ object.img.url }}" >
+            </a>
+            <div class="card-body">
+                <div class="mb-3 mt-3">
+                    <a href="{% url 'like' object.id %}">
+                        <i class="fa-solid fa-heart ml-3"></i>
+                    </a>
+                    <a href="{% url 'new-comment' object.id %}">
+                        <i class="fa-solid fa-comment"></i>
+                    </a>
+                </div>
+                <div class="d-flex gap-3">
+                    <a class="mr-2" href="{% url 'user-posts' object.owner %}">{{ object.owner }}</a>
+                    <p class="article-content">{{ object.caption }}</p>
+                </div>
+            </div>
         </div>
-        <div class="responses mt-3 mb-3">
-            <i class="fa-light fa-heart"></i>
-            <i class="fa-light fa-comment"></i>
-        </div>
-        <div>
-            <form action="#" method="POST">
-                {% csrf_token %}
-                <button class="btn btn-primary" type="submit" name="img_id" value="{{ object.id }}">Like</button>
-            </form>
-        </div>
-    </article>
+    </section>
+   
 {% endblock content %}

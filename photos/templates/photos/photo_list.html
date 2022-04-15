@@ -2,23 +2,29 @@
 
 {% block content %}
     {% for photo in photos %}
-        <section class="container">
-            <div class="prof mb-3">
-                <img class="rounded-circle account-img" src="{{ photo.owner.profile.image.url }}" >
-                <a class="mr-2" href="{% url 'user-posts' photo.owner %}">{{ photo.owner }}</a>
-            </div>
-            <a href="{% url 'photo-detail' photo.id %}">
-                <img class="img-thumbnail article-img" src="{{ photo.img.url }}" >
-            </a>
-            <div class="d-flex gap-3">
-                <a class="mr-2" href="#">{{ photo.owner }}</a>
-                <p class="article-content">{{ photo.caption }}</p>
-            </div>
-            <div class="mb-3">
-                <i class="fa-solid fa-heart ml-3"></i>
-                <a href="{% url 'new-comment' photo.id %}">
-                    <i class="fa-solid fa-comment"></i>
+        <section class="list-section mb-3 mt-3">
+            <div class="card">
+                <div class="prof mb-3">
+                    <img src="{{ photo.owner.profile.image.url }}" class="rounded-circle account-img" alt="">
+                    <a class="mr-2" href="{% url 'user-posts' photo.owner %}">{{ photo.owner }}</a>
+                </div>
+                <a href="{% url 'photo-detail' photo.id %}">
+                    <img class="card-img-top article-img" src="{{ photo.img.url }}" >
                 </a>
+                <div class="card-body">
+                    <div class="mb-3 mt-3">
+                        <a href="{% url 'like' photo.id %}">
+                            <i class="fa-solid fa-heart ml-3"></i>
+                        </a>
+                        <a href="{% url 'new-comment' photo.id %}">
+                            <i class="fa-solid fa-comment"></i>
+                        </a>
+                    </div>
+                    <div class="d-flex gap-3">
+                        <a class="mr-2" href="{% url 'user-posts' photo.owner %}">{{ photo.owner }}</a>
+                        <p class="article-content">{{ photo.caption }}</p>
+                    </div>
+                </div>
             </div>
         </section>
     {% endfor %}

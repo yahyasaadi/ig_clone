@@ -9,18 +9,8 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from .models import Photo, Comment, Like
 from .forms import CommentForm
 
-# Create your views here.
-# def home(request):
-#     context = {
-#         'posts' : Photo.objects.all()
-#     }
-#     return render(request, 'photos/home.html')
 
-# class PhotoListView(ListView):
-#     model = Photo
-#     ordering = ['-date_posted']
-    
-# Try a function based view
+# Create your views here.
 @login_required
 def photos_list(request):
     photos = Photo.objects.all().order_by('-date_posted')
@@ -30,11 +20,9 @@ def photos_list(request):
     return render(request, 'photos/photo_list.html', context)
 
 
-
-
 class UserPhotoListView(ListView):
     model = Photo # blog/post_list.html requires this template to run
-    template_name = 'blog/user_posts.html' # Or specify the template to use here
+    template_name = 'photos/user_posts.html' # Or specify the template to use here
     context_object_name = 'posts'
 
     def get_queryset(self):
@@ -118,7 +106,19 @@ def add_comment(request, id):
     return render(request, 'photos/comment_form.html', context={'comment_form':comment_form})
 
 
-def LikeView(request, pk):
-    photo = get_object_or_404(Photo, id=request.POST.get('img_id'))
-    photo.like.add(request.user)
-    return HttpResponseRedirect(reverse('photo-detail', args=[str(pk)]))
+def add_like(request, id):
+    photo = get_object_or_404(Photo, id=id)
+    like = Like.objects.filter(user=request.user, image=photo)
+
+    if like:
+        like.delete()
+    else:
+        new_like = Like(user=request.user, image=photo)
+        new_like.save()
+    return redirect('home-page')
+
+
+# def LikeView(request, pk):
+#     photo = get_object_or_404(Photo, id=request.POST.get('img_id'))
+#     photo.like.add(request.user)
+#     return HttpResponseRedirect(reverse('photo-detail', args=[str(pk)]))

@@ -38,6 +38,5 @@ class Comment(models.Model):
 
 # The Likes Model
 class Like(models.Model):
-    like = models.IntegerField()
     image = models.ForeignKey(Photo, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=20)

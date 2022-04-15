@@ -16,6 +16,18 @@
     margin-bottom: 20px;
 }
 
+.list-section{
+    width: 70vw;
+    height: 70vh;
+    padding: 20px 20px;
+    margin: 20px 20px;
+    /* border: 20px red solid; */
+}
+
+.article-img{
+    width: 40%;
+    height: 40%;
+}
 
 .account-img {
     height: 25px;
