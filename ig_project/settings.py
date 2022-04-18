@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 import django_heroku
-import cloudinary_storage
+# import cloudinary_storage
 import cloudinary
 import cloudinary.uploader
 import cloudinary.api
