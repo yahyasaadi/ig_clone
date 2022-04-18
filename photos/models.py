@@ -13,15 +13,15 @@ class Photo(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
 
-        img = Image.open(self.img.path)
+    #     img = Image.open(self.img.path)
 
-        if img.width > 350 or img.height > 350:
-            memory_size = (350, 350)
-            img.thumbnail(memory_size)
-            img.save(self.img.path)
+    #     if img.width > 350 or img.height > 350:
+    #         memory_size = (350, 350)
+    #         img.thumbnail(memory_size)
+    #         img.save(self.img.path)
 
 
     def get_absolute_url(self):
