@@ -13,9 +13,9 @@
                     </div>
                 {% endif %}
             </div>
-            <a href="{% url 'photo-detail' object.id %}">
-                <img class="card-img-top article-img" src="{{ object.img.url }}" >
-            </a>
+            
+            <img class="card-img-top article-img" src="{{ object.img.url }}" >
+            
             <div class="card-body">
                 <div class="mb-3 mt-3">
                     <a href="{% url 'like' object.id %}">
