@@ -1,11 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
 from django.contrib import messages
-from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from .models import Photo, Comment, Like
 from .forms import CommentForm
 
@@ -31,12 +29,20 @@ class UserPhotoListView(ListView):
 
 
 
-class PhotoDetailView(DetailView):
-    model = Photo
 
 # Trying a function based view
-def photo_detail(request):
-    pass
+def photo_details_view(request, id):
+    photo = get_object_or_404(Photo, id=id)
+    comments = Comment.objects.filter(image=photo)
+    likes = Like.objects.filter(image=photo).count()
+
+    context = {
+        'photo': photo,
+        'comments': comments,
+        'likes': likes
+    }
+
+    return render(request, 'photos/photo_details.html', context)
 
 
 class PhotoCreateView(LoginRequiredMixin, CreateView):
@@ -90,7 +96,6 @@ def search(request):
 # Comments view function
 def add_comment(request, id):
     photo = get_object_or_404(Photo, id=id)
-    # comments = Comment.objects.filter(image=photo)
     if request.method == 'POST':
         comment = request.POST['comment']
         new_comment = Comment(comment=comment, user=request.user, image=photo)
@@ -99,13 +104,14 @@ def add_comment(request, id):
         if comment_form.is_valid():
             comment_form.save()
             messages.success(request, f'Your comment has been added!')
-            return redirect('home-page')
+            return redirect('photo-detail', id=id)
     else:
         comment_form = CommentForm(instance=request.user)
 
     return render(request, 'photos/comment_form.html', context={'comment_form':comment_form})
 
 
+# Likes view function
 def add_like(request, id):
     photo = get_object_or_404(Photo, id=id)
     like = Like.objects.filter(user=request.user, image=photo)
@@ -115,10 +121,5 @@ def add_like(request, id):
     else:
         new_like = Like(user=request.user, image=photo)
         new_like.save()
-    return redirect('home-page')
+    return redirect('photo-detail', id=id)
 
-
-# def LikeView(request, pk):
-#     photo = get_object_or_404(Photo, id=request.POST.get('img_id'))
-#     photo.like.add(request.user)
-#     return HttpResponseRedirect(reverse('photo-detail', args=[str(pk)]))

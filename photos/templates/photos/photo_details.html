@@ -1,0 +1,46 @@
+{% extends 'photos/base.html' %}
+
+{% block content %}
+    <section class="list-section mb-3 mt-3">
+        <div class="card">
+            <div class="prof mb-3">
+                <img src="{{ photo.owner.profile.image.url }}" class="rounded-circle account-img" alt="">
+                <a class="mr-2" href="{% url 'user-posts' photo.owner %}">{{ photo.owner }}</a>
+                {% if photo.owner == user %}
+                    <div>
+                        <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'photo-update' photo.id %}">Update</a>
+                        <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'photo-delete' photo.id %}">Delete</a>
+                    </div>
+                {% endif %}
+            </div>
+            
+            <img class="card-img-top article-img" src="{{ photo.img.url }}" >
+            
+            <div class="card-body">
+                <div class="mb-3 mt-3">
+                    <a id="icons" href="{% url 'like' photo.id %}">
+                        <i id="like" class="fa-solid fa-heart ml-3"></i>
+                    </a>
+                    <a id="icons" href="{% url 'new-comment' photo.id %}">
+                        <i class="fa-solid fa-comment"></i>
+                    </a>
+                </div>
+                <div class="likes">
+                    <h6>Liked by {{ likes }} users</h6>
+                </div>
+                <div class="d-flex gap-3">
+                    <a class="mr-2" href="{% url 'user-posts' photo.owner %}">{{ photo.owner }}</a>
+                    <p class="article-content">{{ photo.caption }}</p>
+                </div>
+            </div>
+            <h4>Comments</h4>
+            {% for comment in comments %}
+                <div class="d-flex gap-3">
+                    <a class="mr-2 ml-2" href="{% url 'user-posts' comment.user.username %}">{{ comment.user.username }}</a>
+                    <p class="article-content">{{ comment.comment }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+   
+{% endblock content %}
